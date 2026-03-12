@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.DS_Store
+include/lib64/
+include/incCn/
+record/

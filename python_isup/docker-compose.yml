@@ -1,0 +1,16 @@
+services:
+  isup:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    container_name: isup-server
+    network_mode: host        # 장비와 직접 통신 필요 시 host 모드 권장
+    volumes:
+      # 소스 코드 마운트 (개발 시 코드 수정 즉시 반영)
+      - ./config.py:/app/config.py
+      - ./run_isup_rtsp.py:/app/run_isup_rtsp.py
+      - ./isup_wrapper.py:/app/isup_wrapper.py
+      # 녹화 파일 저장
+      - ./record:/app/record
+    restart: unless-stopped

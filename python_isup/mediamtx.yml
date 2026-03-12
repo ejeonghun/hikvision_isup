@@ -5,7 +5,6 @@
 # RTSP 서버
 rtspAddress: :8554
 rtspEncryption: "no"
-rtspTransport: tcp
 
 # RTMP 서버 (VLC 등에서 rtmp://로 접근 가능)
 rtmpAddress: :1935

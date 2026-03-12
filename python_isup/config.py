@@ -6,19 +6,24 @@ import os
 IS_WINDOWS = os.name == "nt"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# 플랫폼별 SDK 디렉토리 자동 선택
-# - Windows: include/lib64 (DLL)
-# - Linux:   include/linux (.so)
-if IS_WINDOWS:
+# 환경변수 HCISUP_SDK_DIR이 있으면 우선 사용 (Docker 등 배포 환경)
+# 없으면 플랫폼별 자동 선택: Windows → include/lib64, Linux → include/linux
+_ENV_SDK_DIR = os.environ.get("HCISUP_SDK_DIR", "")
+if _ENV_SDK_DIR and os.path.isdir(_ENV_SDK_DIR):
+    DEFAULT_SDK_DIR = _ENV_SDK_DIR
+elif IS_WINDOWS:
     DEFAULT_SDK_DIR = os.path.join(SCRIPT_DIR, "include", "lib64")
-    DEFAULT_CMS_LIB = "HCISUPCMS.dll"
-    DEFAULT_STREAM_LIB = "HCISUPStream.dll"
+else:
+    DEFAULT_SDK_DIR = os.path.join(SCRIPT_DIR, "include", "linux")
+
+if IS_WINDOWS:
+    DEFAULT_CMS_LIB = os.path.join(DEFAULT_SDK_DIR, "HCISUPCMS.dll")
+    DEFAULT_STREAM_LIB = os.path.join(DEFAULT_SDK_DIR, "HCISUPStream.dll")
     DEFAULT_OPENSSL_CRYPTO = os.path.join(DEFAULT_SDK_DIR, "libeay32.dll")
     DEFAULT_OPENSSL_SSL = os.path.join(DEFAULT_SDK_DIR, "ssleay32.dll")
 else:
-    DEFAULT_SDK_DIR = os.path.join(SCRIPT_DIR, "include", "linux")
-    DEFAULT_CMS_LIB = "libHCISUPCMS.so"
-    DEFAULT_STREAM_LIB = "libHCISUPStream.so"
+    DEFAULT_CMS_LIB = os.path.join(DEFAULT_SDK_DIR, "libHCISUPCMS.so")
+    DEFAULT_STREAM_LIB = os.path.join(DEFAULT_SDK_DIR, "libHCISUPStream.so")
     DEFAULT_OPENSSL_CRYPTO = os.path.join(DEFAULT_SDK_DIR, "libcrypto.so")
     DEFAULT_OPENSSL_SSL = os.path.join(DEFAULT_SDK_DIR, "libssl.so")
 

@@ -5,18 +5,29 @@ services:
       dockerfile: Dockerfile
     platform: linux/amd64
     container_name: isup-server
-    # macOS Docker Desktop에서는 host 모드가 동작하지 않으므로 포트 매핑 사용
     ports:
+      # ISUP
       - "7660:7660/tcp"
       - "7660:7660/udp"
       - "8003:8003/tcp"
       - "8003:8003/udp"
+      # MediaMTX - RTSP
+      - "8554:8554/tcp"
+      # MediaMTX - RTMP (VLC 등)
+      - "1935:1935/tcp"
+      # MediaMTX - HLS (브라우저)
+      - "8888:8888/tcp"
+      # MediaMTX - WebRTC
+      - "8889:8889/tcp"
+      # Control socket
       - "19090:19090/tcp"
+      # Voice
       - "7500:7500/tcp"
       - "7500:7500/udp"
     volumes:
       - ./config.py:/app/config.py
       - ./run_isup_rtsp.py:/app/run_isup_rtsp.py
       - ./isup_wrapper.py:/app/isup_wrapper.py
+      - ./mediamtx.yml:/app/mediamtx.yml
       - ./record:/app/record
     restart: unless-stopped

@@ -1,0 +1,24 @@
+###############################################
+# MediaMTX 최소 설정 - ISUP RTSP publish용
+###############################################
+
+# RTSP 서버
+rtspAddress: :8554
+rtspEncryption: "no"
+rtspTransport: tcp
+
+# RTMP 서버 (VLC 등에서 rtmp://로 접근 가능)
+rtmpAddress: :1935
+
+# HLS 서버 (브라우저에서 접근 가능)
+hlsAddress: :8888
+
+# WebRTC 서버
+webrtcAddress: :8889
+
+# 로그
+logLevel: info
+
+# 경로 설정 - 모든 경로 허용
+paths:
+  all_others:

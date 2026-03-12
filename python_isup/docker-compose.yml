@@ -5,12 +5,18 @@ services:
       dockerfile: Dockerfile
     platform: linux/amd64
     container_name: isup-server
-    network_mode: host        # 장비와 직접 통신 필요 시 host 모드 권장
+    # macOS Docker Desktop에서는 host 모드가 동작하지 않으므로 포트 매핑 사용
+    ports:
+      - "7660:7660/tcp"
+      - "7660:7660/udp"
+      - "8003:8003/tcp"
+      - "8003:8003/udp"
+      - "19090:19090/tcp"
+      - "7500:7500/tcp"
+      - "7500:7500/udp"
     volumes:
-      # 소스 코드 마운트 (개발 시 코드 수정 즉시 반영)
       - ./config.py:/app/config.py
       - ./run_isup_rtsp.py:/app/run_isup_rtsp.py
       - ./isup_wrapper.py:/app/isup_wrapper.py
-      # 녹화 파일 저장
       - ./record:/app/record
     restart: unless-stopped
